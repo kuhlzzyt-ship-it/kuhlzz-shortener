@@ -1,18 +1,55 @@
-KUHLZZ.STORE SHORTENER BACKEND
+KUHLZZ.STORE SHORTENER — AIVEN MYSQL
 
-Render:
-Build command: pip install -r requirements.txt
-Start command: gunicorn app:app
+Render settings
+===============
 
-Environment variables:
-DATABASE_URL = your Aiven PostgreSQL service URI
-SHORTENER_API_KEY = a long random secret
-BASE_URL = https://kuhlzz.store
+Build Command:
+    pip install -r requirements.txt
 
-After deployment, add kuhlzz.store as the Render custom domain and configure the DNS records Render shows you.
+Start Command:
+    gunicorn app:app
 
-API:
-POST /api/v1/links   Header X-API-Key
-GET  /api/v1/links   Header X-API-Key
-DELETE /api/v1/links/<id> Header X-API-Key
-GET /<alias> redirects publicly.
+Environment variables
+=====================
+
+MYSQL_HOST
+    Aiven MySQL host
+
+MYSQL_PORT
+    Aiven MySQL port, e.g. 12345
+
+MYSQL_USER
+    Aiven MySQL username
+
+MYSQL_PASSWORD
+    Aiven MySQL password
+
+MYSQL_DATABASE
+    Database name, often defaultdb unless you created another one
+
+SHORTENER_API_KEY
+    Long random secret used by the KUHLZZ desktop module
+
+BASE_URL
+    https://kuhlzz.store
+
+Optional:
+MYSQL_SSL_CA
+    Filesystem path to an Aiven CA certificate if you explicitly mount/provide
+    the CA file to Render.
+
+Do NOT paste the whole mysql:// URI into any of the fields above.
+Do NOT commit credentials to GitHub.
+
+Endpoints
+=========
+GET    /health
+POST   /api/v1/links
+GET    /api/v1/links
+DELETE /api/v1/links/<id>
+GET    /<alias>
+
+The management endpoints require:
+    X-API-Key: <SHORTENER_API_KEY>
+
+The short_links table is created automatically at application startup.
